@@ -271,6 +271,15 @@
 	        <arg file="config/rain.config.cassandra.json"/>
 	    </java>
 	</target>
+	<target depends="build" name="Benchmark-oliojava">
+        <java classname="radlab.rain.Benchmark" failonerror="true" fork="yes">
+            <classpath refid="rain.classpath"/>
+                <jvmarg value="-Xmx1g" />
+                <jvmarg value="-Xms256m" />
+                <jvmarg value="-XX:+DisableExplicitGC"/>
+                <arg file="config/rain.config.olio.json"/>
+        </java>
+    </target>
     <target depends="build" name="package">
         <jar destfile="rain.jar" filesetmanifest="mergewithoutmain">
             <manifest>
@@ -470,6 +479,12 @@
             <fileset dir="bin" includes="radlab/rain/workload/cassandra/**"/>
         	<!-- Bake the configuration files into the jar -->
         	<fileset dir="config" includes="*cassandra*.json"/>
+        </jar>
+    </target>
+	<target depends="build" name="package-oliojava">
+        <mkdir dir="workloads"/>
+        <jar destfile="workloads/oliojava.jar" filesetmanifest="mergewithoutmain">
+            <fileset dir="bin" includes="radlab/rain/workload/oliojava/**"/>
         </jar>
     </target>
 	<target depends="build" name="Benchmark-memprof">
